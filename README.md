@@ -16,7 +16,7 @@ Plugins used are:
 - chopper 
 - flutter_bloc
 
-<img src="https://github.com/gondaimgano/WeatherDemoSwiftUICoreData/master/Simulator Screen Shot - iPhone 11 Pro Max - 2021-04-29 at 18.00.35.png"/>
+<img src="https://github.com/gondaimgano/WeatherDemoSwiftUICoreData/blob/master/Simulator%20Screen%20Shot%20-%20iPhone%2011%20Pro%20Max%20-%202021-04-29%20at%2018.00.35.png"/>
 A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
