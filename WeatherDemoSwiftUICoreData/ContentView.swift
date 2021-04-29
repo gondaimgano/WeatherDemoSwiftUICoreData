@@ -110,14 +110,14 @@ struct ForecastView: View {
                 Spacer()
                 
                 if item.desc!.lowercased().contains("cloud") {
-                    Image("partlysunny").renderingMode(.template).scaledToFill()
+                    Image("partlysunny").renderingMode(.template).scaledToFit().scaleEffect(1.5)
                 }
                 if item.desc!.lowercased().contains("rain") {
-                    Image("rain").renderingMode(.template).scaledToFill()
+                    Image("rain").renderingMode(.template).scaledToFit().scaleEffect(1.5)
                     
                 }
                 if item.desc!.lowercased().contains("clear")||item.desc!.lowercased().contains("sun") {
-                    Image("clear").renderingMode(.template).scaledToFill()
+                    Image("clear").renderingMode(.template).scaledToFit().scaleEffect(1.5)
                     
                 }
                 Spacer()
