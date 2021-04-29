@@ -48,7 +48,7 @@ class WeatherManager:NSObject, CLLocationManagerDelegate,ObservableObject {
         if let data = try? DataController.shared.viewContext.fetch(self.fetchForecastRequest)
               {
                self.dataList = data
-               
+                print(self.dataList)
                }
     
     }
@@ -123,11 +123,12 @@ class WeatherManager:NSObject, CLLocationManagerDelegate,ObservableObject {
                         self.isConnected = true
                            if let dbdata =  try? DataController.shared.viewContext.fetch(self.fetchForecastRequest){
                                self.dataList = dbdata
+                            self.dataList.forEach{ toDelete in
+                                                          DataController.shared.viewContext.delete(toDelete)
+                                                      }
+                                                      try? DataController.shared.viewContext.save()
                            }
-                           self.dataList.forEach{ toDelete in
-                               DataController.shared.viewContext.delete(toDelete)
-                           }
-                           try? DataController.shared.viewContext.save()
+                          
                            data.list.forEach{
                                item in
                                let toSave = Forecast(context:DataController.shared.viewContext)
