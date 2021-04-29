@@ -22,7 +22,9 @@ extension Int{
            let format = DateFormatter()
            let epochTime = TimeInterval(self)
            let date = Date(timeIntervalSince1970: epochTime)
-            format.dateFormat = "HH:mm"
+            format.dateFormat = "h:mm a"
+        format.amSymbol = "AM"
+        format.pmSymbol = "PM"
              let day = format.string(from: date)
        return day
        }
@@ -38,14 +40,16 @@ extension Int64{
           let day = format.string(from: date)
     return day
     }
-    func toTime()->String{
-         let format = DateFormatter()
-         let epochTime = TimeInterval(self)
-         let date = Date(timeIntervalSince1970: epochTime)
-          format.dateFormat = "HH:mm"
-           let day = format.string(from: date)
-     return day
-     }
+  func toTime()->String{
+        let format = DateFormatter()
+        let epochTime = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: epochTime)
+         format.dateFormat = "h:mm a"
+     format.amSymbol = "AM"
+     format.pmSymbol = "PM"
+          let day = format.string(from: date)
+    return day
+    }
 }
 
 extension Date{

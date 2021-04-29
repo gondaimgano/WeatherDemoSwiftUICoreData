@@ -48,7 +48,7 @@ class WeatherManager:NSObject, CLLocationManagerDelegate,ObservableObject {
         if let data = try? DataController.shared.viewContext.fetch(self.fetchForecastRequest)
               {
                self.dataList = data
-                print(self.dataList)
+               
                }
     
     }
@@ -77,7 +77,46 @@ class WeatherManager:NSObject, CLLocationManagerDelegate,ObservableObject {
             
             if let userLocation = locations.last {
             
-   
+         WeatherService.fetchForecast(lon:userLocation.coordinate.longitude,lat:userLocation.coordinate.latitude,units:.metric  , cnt: 40){
+                            data, error in
+                       
+                            if let data = data {
+                             self.isConnected = true
+                                if let dbdata =  try? DataController.shared.viewContext.fetch(self.fetchForecastRequest){
+                                    self.dataList = dbdata
+                                 self.dataList.forEach{ toDelete in
+                                                               DataController.shared.viewContext.delete(toDelete)
+                                                           }
+                                                           try? DataController.shared.viewContext.save()
+                                }
+                               
+                                data.list.forEach{
+                                    item in
+                                    let toSave = Forecast(context:DataController.shared.viewContext)
+                                    toSave.desc = item.weather.first?.weatherDescription
+                                    toSave.dt = Int64(item.dt)
+                                    toSave.dtTxt = item.dtTxt
+                                    toSave.temp = item.main.temp
+                                    toSave.tempMin = item.main.tempMin
+                                    toSave.tempMax = item.main.tempMax
+                                    
+                                
+                                }
+                                //try! DataController.shared.viewContext.save()
+                               if let _ =  try? DataController.shared.viewContext.save() {
+                                self.refreshForcast()
+                                }
+                                
+                            }
+            if let error = error {
+                                       
+                                        if let err = error.localizedDescription{
+                                                            
+                                                                 self.errorMessage = err
+                                                             self.isConnected = false
+                                                             }
+                                   }
+                        }
                  
                  
                 WeatherService.fetchCurrentWeather(lon:userLocation.coordinate.longitude,lat:userLocation.coordinate.latitude,units:.metric ){
@@ -100,7 +139,7 @@ class WeatherManager:NSObject, CLLocationManagerDelegate,ObservableObject {
                         }
                      }
                      if let error = error {
-                        //print("=====****")
+                       
                         if let err = error.localizedDescription{
                        
                             self.errorMessage = err
@@ -109,44 +148,7 @@ class WeatherManager:NSObject, CLLocationManagerDelegate,ObservableObject {
                      }
                  }
                 
-                WeatherService.fetchForecast(lon:userLocation.coordinate.longitude,lat:userLocation.coordinate.latitude,units:.metric  , cnt: 40){
-                       data, error in
-                    if let error = error {
-                        
-                         if let err = error.localizedDescription{
-                                             
-                                                  self.errorMessage = err
-                                              self.isConnected = false
-                                              }
-                    }
-                       if let data = data {
-                        self.isConnected = true
-                           if let dbdata =  try? DataController.shared.viewContext.fetch(self.fetchForecastRequest){
-                               self.dataList = dbdata
-                            self.dataList.forEach{ toDelete in
-                                                          DataController.shared.viewContext.delete(toDelete)
-                                                      }
-                                                      try? DataController.shared.viewContext.save()
-                           }
-                          
-                           data.list.forEach{
-                               item in
-                               let toSave = Forecast(context:DataController.shared.viewContext)
-                               toSave.desc = item.weather.first?.weatherDescription
-                               toSave.dt = Int64(item.dt)
-                               toSave.dtTxt = item.dtTxt
-                               toSave.temp = item.main.temp
-                               toSave.tempMin = item.main.tempMin
-                               toSave.tempMax = item.main.tempMax
-                               
-                           
-                           }
-                          if let _ =  try? DataController.shared.viewContext.save() {
-                           self.refreshForcast()
-                           }
-                           
-                       }
-                   }
+            
 
                 
             

@@ -20,10 +20,10 @@ struct ContentView: View {
                 Divider()
                     .padding(.horizontal, 20.0)
                 
-                ScrollView(showsIndicators:false) {
+               
                     ForecastView(weather: weather)
-                }
-                .padding(.horizontal, 20.0)
+                
+                .padding(.horizontal, 10.0)
                 
                
                 }
@@ -100,7 +100,7 @@ struct MinMaxView: View {
 struct ForecastView: View {
    @ObservedObject var weather:WeatherManager
     var body: some View {
-        ForEach(weather.dataList,id: \.dt){
+        List(weather.dataList,id: \.dt){
             item in
             HStack(alignment:.firstTextBaseline) {
                 VStack(alignment: .leading) {
